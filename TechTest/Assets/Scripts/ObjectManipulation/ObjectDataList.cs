@@ -4,7 +4,7 @@ using UnityEngine;
 namespace VRTechTest.ObjectLoading
 {
     [System.Serializable]
-    public class ObjectDataList : MonoBehaviour
+    public class ObjectDataList
     {
         public List<ObjectData> Objects;
     }

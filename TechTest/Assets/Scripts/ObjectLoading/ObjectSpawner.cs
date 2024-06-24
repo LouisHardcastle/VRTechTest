@@ -4,7 +4,6 @@ using UnityAtoms;
 using UnityAtoms.BaseAtoms;
 using UnityEngine;
 using VRTechTest.ObjectLoading;
-using ObjectData = VRTechTest.ObjectLoading.ObjectData;
 using Void = UnityAtoms.Void;
 
 namespace VRTechTest.ObjectManipulation

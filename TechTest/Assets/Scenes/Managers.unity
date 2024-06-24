@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _folder: Assets\Scripts\ObjectLoading\LocalObjects
-  _filename: localObjects.json
+  _filename: localObjectsJson
   _objects: {fileID: 11400000, guid: f2cb8f708487e1e44a129dcb90ad6aa5, type: 2}
 --- !u!4 &1864755962
 Transform:
@@ -195,6 +195,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04076fc20db4ce644bb9a29c8e654600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnedObjects: []
+  _objectAdded: {fileID: 0}
+  _onObjectGrabbed: {fileID: 0}
+  _onObjectReleased: {fileID: 0}
+  _onObjectsStuck: {fileID: 0}
+  _setup: {fileID: 0}
+  _stepsCompleted: 0
 --- !u!4 &2125560611
 Transform:
   m_ObjectHideFlags: 0

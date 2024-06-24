@@ -1,99 +1,94 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using UnityAtoms;
-using UnityEditor.Rendering;
 using UnityEngine;
+using Newtonsoft.Json;
 using VRTechTest.Interfaces;
+
 
 namespace VRTechTest.ObjectLoading
 {
+
     public class ObjectProviderLocal : MonoBehaviour, IObjectProvider
     {
 
-        [SerializeField] private string _folder;
-        [SerializeField] private string _filename;
-        [SerializeField] private ObjectDataListVariable _objects;
+        [SerializeField]
+        private string _folder;
+        [SerializeField]
+        private string _filename;
 
         private string GetFullPath() => Path.Combine(_folder, _filename);
 
+        [SerializeField]
+        private ObjectDataListVariable _objects;
+
+
+
         private void OnEnable()
         {
-            _objects?.SetValue(GetObjects());
+            _objects.SetValue(GetObjects());
         }
+
+
 
         public ObjectDataList GetObjects()
         {
-            string path = GetFullPath();
-            if (!File.Exists(path))
+            string fullPath = GetFullPath();
+            if (!File.Exists(fullPath))
             {
-                Debug.LogWarning("No file exists, building local json for testing");
-                WriteToFile(path, CreateJson());
+                Debug.LogWarning("No File Exists, building json from test parameters");
             }
 
-            LoadFromFile(path, out string json);
+            LoadFromFile(fullPath, out string json);
 
             if (string.IsNullOrEmpty(json))
             {
-                Debug.LogError("File is empty");
+                Debug.LogError("file is Empty");
                 return null;
             }
 
+            Debug.Log(json);
             ObjectDataList objects = JsonConvert.DeserializeObject<ObjectDataList>(json);
-            _objects.SetValue(objects);
 
+            if (objects is null)
+            {
+                Debug.LogError("Failed to convert json to ObjectList");
+                return null;
+            }
+
+            _objects.SetValue(objects);
             return objects;
         }
 
-        private void WriteToFile(string path, string createJson)
+
+        public void LoadFromFile(string fullPath,
+            out string result)
         {
             try
             {
-                File.WriteAllText(path, createJson);
+                result = File.ReadAllText(fullPath);
             }
             catch (Exception)
             {
-                Debug.LogError("Failed to write json");
-            }
-        }
-
-        private string CreateJson()
-        {
-            ObjectDataList objectsToWrite = new()
-            {
-                Objects = new()
-                {
-                    new()
-                    {
-                        SpawnPosition = new float[] { 0, 0, 0 },
-                        Colour = new[] { 255, 0, 0 },
-                        isInteractable = true,
-                        ResourceName = "Cube"
-                    },
-                    new()
-                    {
-                        SpawnPosition = new float[] { 0, 0, 0 },
-                        Colour = new[] { 255, 0, 0 },
-                        isInteractable = true,
-                        ResourceName = "CubeSocket"
-                    }
-                }
-            };
-
-            return JsonConvert.SerializeObject(objectsToWrite);
-        }
-
-        private void LoadFromFile(string path, out string result)
-        {
-            try
-            {
-                result = File.ReadAllText(path);
-            }
-            catch (Exception)
-            {
-                Debug.LogError("Failed to read from file");
                 result = "";
             }
         }
+
+        public void WriteToFile(string fullPath, string content)
+        {
+            try
+            {
+                File.WriteAllText(fullPath, content);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
+
+
+
     }
 }
+

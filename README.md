@@ -18,5 +18,5 @@ Unity Version: [2023.2.11f1]
 
 ## Screenshot of submission
 
-- ![image](https://github.com/LouisHardcastle/VRTechTest/assets/71891790/c5fb0025-6cfe-4c61-bc64-50358e670823)
+![image](https://github.com/LouisHardcastle/VRTechTest/assets/71891790/c5fb0025-6cfe-4c61-bc64-50358e670823)
 

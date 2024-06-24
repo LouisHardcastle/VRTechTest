@@ -22,4 +22,5 @@ Unity Version: [2023.2.11f1]
 
 
 ## Known Issues
-- used Resource.Load for initial setup/testing with plan to switch to addressables afterwards, ran out of time. As such the project works for Quest Link but not side loaded APK.  
+- used Resource.Load for initial setup/testing with plan to switch to addressables afterwards, ran out of time. As such the project works for Quest Link but not side loaded APK.
+- Code needs to be properly commented, with #regions added but ran out of time.

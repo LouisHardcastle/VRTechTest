@@ -1,1 +1,1 @@
-{"Objects":[{"SpawnPosition":[0.0,1.0,0.25],"Colour":[255,0,0],"IsInteractable":true,"ResourceName":"Cube"},{"SpawnPosition":[0.0,1.0,-0.25],"Colour":[0,0,255],"IsInteractable":true,"ResourceName":"CubeSocket"}]}
+{"Objects":[{"SpawnPosition":[2,1.5,0.7],"Colour":[255,0,0],"IsInteractable":true,"ResourceName":"Cube"},{"SpawnPosition":[2,1.3,-0.7],"Colour":[0,0,255],"IsInteractable":true,"ResourceName":"CubeSocket"}]}

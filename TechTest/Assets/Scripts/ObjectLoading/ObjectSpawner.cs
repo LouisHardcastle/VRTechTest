@@ -32,7 +32,8 @@ namespace VRTechTest.ObjectManipulation
             {
                 Destroy(spawnedObject);
             }
-            _reset?.Raise();
+            _spawnedObjects.Clear();
+            
             ObjectListUpdated(_objects.Value);
         }
 

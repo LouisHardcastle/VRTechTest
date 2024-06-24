@@ -167,7 +167,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: hello
+  m_text: Pick Me Up
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -194,8 +194,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1.24
-  m_fontSizeBase: 1.24
+  m_fontSize: 0.48
+  m_fontSizeBase: 0.48
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -302,8 +302,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.45, y: 0.45, z: 0.45}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 582576236792706729}
   - {fileID: 8801800875662442280}
@@ -567,5 +567,4 @@ MonoBehaviour:
   _textMesh: {fileID: 6355957470532991793}
   _isStuck: 0
   _objectGrabbed: {fileID: 11400000, guid: 0bc5eb970441cc54db87f0a149266798, type: 2}
-  _objectReleased: {fileID: 11400000, guid: 11a4b850078d06046a02e5ebd5b50e45, type: 2}
-  _objectStuck: {fileID: 11400000, guid: 43ef9211575fb5e49a72b814238f850a, type: 2}
+  _reset: {fileID: 11400000, guid: 87cf4901d4d75ee40a03da896036436d, type: 2}

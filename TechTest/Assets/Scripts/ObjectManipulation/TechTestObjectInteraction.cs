@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
 using UnityAtoms.BaseAtoms;
 using UnityEngine;
@@ -17,8 +18,7 @@ namespace VRTechTest.ObjectManipulation
 
         [SerializeField] private bool _isStuck;
         [SerializeField] private GameObjectEvent _objectGrabbed;
-        [SerializeField] private GameObjectEvent _objectReleased;
-        [SerializeField] private GameObjectEvent _objectStuck;
+        [SerializeField] private VoidEvent _reset;
 
         private void Awake()
         {
@@ -29,7 +29,6 @@ namespace VRTechTest.ObjectManipulation
         private void OnEnable()
         {
             _grabbedObject.selectEntered.AddListener(OnObjectGrabbed);
-            _grabbedObject.selectExited.AddListener(OnObjectReleased);
         }
 
         public void UpdateText(string text)
@@ -40,15 +39,10 @@ namespace VRTechTest.ObjectManipulation
         private Vector3 _offsetPosition;
         private Quaternion _offsetRotation;
 
-        private void OnObjectReleased(SelectExitEventArgs evt)
-        {
-            _objectReleased?.Raise(gameObject);
-        }
 
         private void OnDisable()
         {
             _grabbedObject.selectEntered.RemoveListener(OnObjectGrabbed);
-            _grabbedObject.selectExited.RemoveListener(OnObjectReleased);
         }
 
         private void OnObjectGrabbed(SelectEnterEventArgs evt)
@@ -61,7 +55,15 @@ namespace VRTechTest.ObjectManipulation
         {
             Pose interactorPose = grabInteractable.interactorsSelecting[0].GetAttachTransform(grabInteractable).GetWorldPose();
             targetPose.position = interactorPose.position + _offsetPosition;
-            targetPose.rotation = interactorPose.rotation * _offsetRotation;
+        }
+
+        public void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.layer != 6)
+                return;
+
+            _reset?.Raise();
+            
         }
 
     }

@@ -12,44 +12,66 @@ namespace VRTechTest.Managers
     {
         private bool _hasInit;
 
+        [SerializeField] private AudioSource audioSource;  
+        [SerializeField] private AudioClip stuckSound;
+
         [SerializeField] private List<GameObject> _spawnedObjects = new();
         [SerializeField] private GameObjectEvent _objectAdded;
         [SerializeField] private GameObjectEvent _onObjectGrabbed;
-        [SerializeField] private GameObjectEvent _onObjectReleased;
-        [SerializeField] private GameObjectEvent _onObjectsStuck;
+        [SerializeField] private VoidEvent _reset;
+        [SerializeField] private VoidEvent _respawnObjects;
+        [SerializeField] private VoidEvent _taskFinished;
 
         [SerializeField] private VoidEvent _setup;
+        [SerializeField] private BoolVariable _isStuck;
 
         [SerializeField] private int _stepsCompleted;
 
         private void OnEnable()
         {
+            _reset?.Register(Reset);
+            _isStuck?.Changed.Register(ObjectsStuck);
             _setup?.Register(InitObjects);
             _objectAdded?.Register(AddObject);
             _onObjectGrabbed?.Register(ObjectGrabbed);
-            _onObjectReleased?.Register(ObjectReleased);
-            _onObjectsStuck?.Register(ObjectsStuck);
+        }
+
+        private void Reset(Void obj)
+        {
+            
+            _isStuck.SetValue(false);
+            _spawnedObjects.Clear();
+
+            _respawnObjects?.Raise();
+            _stepsCompleted = 0;
         }
 
         private void OnDisable()
         {
             _setup?.Unregister(InitObjects);
             _onObjectGrabbed?.Unregister(ObjectGrabbed);
-            _onObjectReleased?.Unregister(ObjectReleased);
-            _onObjectsStuck?.Unregister(ObjectsStuck);
+            _objectAdded?.Unregister(AddObject);
+            _isStuck?.Changed.Unregister(ObjectsStuck);
         }
-
-        private void ObjectsStuck(GameObject obj)
+        private void ObjectsStuck(bool isStuck)
         {
-            throw new System.NotImplementedException();
+            if (!isStuck)
+                return;
+
+            _taskFinished?.Raise();
+
+            // Play the audio cue
+            if (audioSource != null && stuckSound != null)
+            {
+                audioSource.PlayOneShot(stuckSound);
+            }
+
+            foreach (var spawnedObject in _spawnedObjects)
+            {
+                spawnedObject.GetComponent<TechTestObjectInteraction>().UpdateText("");
+            }
         }
 
-        private void ObjectReleased(GameObject obj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-    
         private void ObjectGrabbed(GameObject obj)
         {
             switch (_stepsCompleted)

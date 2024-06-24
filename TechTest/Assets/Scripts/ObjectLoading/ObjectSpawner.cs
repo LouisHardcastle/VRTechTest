@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityAtoms;
 using UnityAtoms.BaseAtoms;
 using UnityEngine;
 using VRTechTest.ObjectLoading;
 using ObjectData = VRTechTest.ObjectLoading.ObjectData;
+using Void = UnityAtoms.Void;
 
 namespace VRTechTest.ObjectManipulation
 {
@@ -14,11 +16,25 @@ namespace VRTechTest.ObjectManipulation
         [SerializeField] private VoidEvent _spawnObjects;
         [SerializeField] private List<GameObject> _spawnedObjects = new();
         [SerializeField] private GameObjectEvent _objectSpawned;
+        [SerializeField] private VoidEvent _respawnObjects;
+        [SerializeField] private VoidEvent _reset;
         [SerializeField] private VoidEvent _setup;
 
         private void OnEnable()
         {
             _objects?.Changed.Register(ObjectListUpdated);
+            _respawnObjects?.Register(RespawnObjects);
+
+        }
+
+        private void RespawnObjects(Void obj)
+        {
+            foreach (GameObject spawnedObject in _spawnedObjects)
+            {
+                Destroy(spawnedObject);
+            }
+            _reset?.Raise();
+            ObjectListUpdated(_objects.Value);
         }
 
         private void OnDisable()
@@ -30,28 +46,32 @@ namespace VRTechTest.ObjectManipulation
         {
             foreach (ObjectData objectData in obj.Objects)
             {
-                if (Resources.Load<GameObject>(objectData.ResourceName) is null)
-                {
-                    Debug.LogError("No matching Resource found");
-                    return;
-                }
-
-                GameObject newObject = Instantiate(Resources.Load<GameObject>(objectData.ResourceName));
-               
-                Color objectColour = GetColour(objectData.Colour);
-                Renderer renderer = newObject.GetComponentInChildren<MeshRenderer>();
-                Material newMat = new Material(renderer.material);
-                newMat.color = GetColour(objectData.Colour);
-                renderer.sharedMaterial = newMat;
-
-                newObject.transform.position = GetSpawnLocation(objectData.SpawnPosition);
-                newObject.transform.eulerAngles = new Vector3(0, 90, 0);
-
-                _spawnedObjects.Add(newObject);
+               Spawn(objectData);
             }
-
             AddGameObjectsToManager();
             _setup?.Raise();
+        }
+
+        private void Spawn(ObjectData objectData)
+        {
+            if (Resources.Load<GameObject>(objectData.ResourceName) is null)
+            {
+                Debug.LogError("No matching Resource found");
+                return;
+            }
+
+            GameObject newObject = Instantiate(Resources.Load<GameObject>(objectData.ResourceName));
+
+            Color objectColour = GetColour(objectData.Colour);
+            Renderer renderer = newObject.GetComponentInChildren<MeshRenderer>();
+            Material newMat = new Material(renderer.material);
+            newMat.color = GetColour(objectData.Colour);
+            renderer.sharedMaterial = newMat;
+
+            newObject.transform.position = GetSpawnLocation(objectData.SpawnPosition);
+            newObject.transform.eulerAngles = new Vector3(0, 90, 0);
+
+            _spawnedObjects.Add(newObject);
         }
 
         private void AddGameObjectsToManager()

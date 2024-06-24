@@ -13,10 +13,13 @@ a simple simulation in VR, that allows a user to connect 2 items together, notif
 - Sound cues for finishing the task
 
 ### Setup
-
 Unity Version: [2023.2.11f1]
 
-## Screenshot of submission
 
+
+## Screenshot of submission
 ![image](https://github.com/LouisHardcastle/VRTechTest/assets/71891790/c5fb0025-6cfe-4c61-bc64-50358e670823)
 
+
+## Known Issues
+- used Resource.Load for initial setup/testing with plan to switch to addressables afterwards, ran out of time. As such the project works for Quest Link but not side loaded APK.  
